@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Evaluación Experimental</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.17/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap-grid.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: title-slide, inverse, center, middle
+
+
+
+&lt;style type="text/css"&gt;
+.huge .remark-code { /*Change made here*/
+  font-size: 200% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+&lt;/style&gt;
+
+.title[
+# Evaluación Experimental
+]
+.subtitle[
+### Una aplicación del Proyecto Esperanza en Oaxaca
+]
+&lt;br/&gt;
+
+.author[
+### Irvin Rojas &lt;br&gt; [rojasirvin.com](https://www.rojasirvin.com/) &lt;br&gt; [&lt;i class="fab fa-github"&gt;&lt;/i&gt;](https://github.com/rojasirvin) [&lt;i class="fab fa-twitter"&gt;&lt;/i&gt;](https://twitter.com/RojasIrvin) [&lt;i class="ai ai-google-scholar"&gt;&lt;/i&gt;](https://scholar.google.com/citations?user=FUwdSTMAAAAJ&amp;hl=en)
+]
+
+&lt;br/&gt;
+
+.affiliation[
+### Centro de Investigación y Docencia Económicas &lt;br&gt; División de Economía  &lt;br&gt;  &lt;br&gt; Actualización: 2023-04-12
+]
+
+
+---
+
+# Agenda
+
+1. Causalidad y sesgo de selección
+
+1. Métodos experimentales para resolver el problema de selección
+
+1. Tres pilares para una evaluación exitosa
+
+  - Teoría
+  - Diseño e implementación
+  - Econometría
+
+1. Aplicación del *Proyecto Esperanza*
+
+1. Ejercicio de replicación
+
+1. Reflexiones finales
+
+
+---
+
+class: inverse, middle, center
+
+# 1. Causalidad y sesgo de selección
+
+---
+
+# Efectos causales
+
+Pensemos en un tratamiento binario
+
+`$$T_i=\begin{cases}
+1 \quad\text{tratado} \\
+0 \quad\text{no tratado}
+\end{cases}$$`
+
+El resultado que cada individuo tendría bajo cada régimen de tratamiento:
+  - `\(y_{1i}\)` con `\(T_i=1\)`
+  
+  - `\(y_{0i}\)` con `\(T_i=0\)`
+
+Supongamos que el tratamiento es recibir un trasplante y el resultado es morir (1) o seguir vivo (0) cinco días después de recibirlo (Hernan &amp; Robins, 2018)
+
+Supongamos que Zeus **recibió** el trasplante y a los cinco días había **fallecido**
+  
+Por otro lado, Hena **no recibió** el trasplante y a los cinco días seguía **seguía vivo**
+  
+No tardarían algunos columnistas en decir que hay que prohibir los trasplantes
+
+---
+
+# Efectos causales
+  
+Supongamos también que podemos conocer que:
+  
+`$$y_{Zeus}=\begin{cases}
+y_{1,Zeus}=1\\
+y_{0,Zeuz}=0
+\end{cases}$$`
+
+es decir, si no hubiera recibo el trasplante, Zeus estaría vivo cinco días después
+
+Similarmente, conocemos que:
+
+`$$y_{Hena}=\begin{cases}
+y_{1,Hena}=0\\
+y_{0,Hena}=0
+\end{cases}$$`
+
+**Efecto causal para un individuo**: el tratamiento tiene un efecto causal para `\(i\)` si `\(y_{1i}\neq y_{0i}\)`
+  
+En nuestro ejemplo, el tratamiento tuvo un efecto causal en Zeus, pero no en Hena
+
+---
+
+# Resultados potenciales
+
+`\(y_{1i}\)` y `\(y_{0i}\)` se conocen como resultados potenciales o contrafactuales
+
+El término *potencial* se debe a que solo vemos uno de ellos
+
+En nuestro ejemplo, solo observamos que `\(y_{0,Zeus}=y_{1,Zeus}=1\)`
+
+En general, el efecto causal para un individuo no puede ser identificado
+
+---
+
+# Efectos causales promedio
+
+Supongamos que podemos estudiar a la familia de Zeus, `\(N=20\)`
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:70%; "&gt;&lt;table class=" lightable-paper lightable-hover" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+&lt;tr&gt;&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important;position: sticky; top:0; background-color: #FFFFFF;" colspan="3"&gt;&lt;div style="TRUE"&gt;Efectos individuales&lt;/div&gt;&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt; Persona &lt;/th&gt;
+   &lt;th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"&gt; y0 &lt;/th&gt;
+   &lt;th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;"&gt; y1 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+
+
+
+---
+
+# Efectos causales promedio
+
+De la tabla podemos concluir que `\(P(y_{1i}=1)=10/20=0.5\)`, es decir, la mitad de quienes reciben el trasplante morirían después de cinco días
+
+Y también observamos que `\(P(y_{0i}=1)=0.5\)`, es decir, que la probabilidad de morir de no haber recibido el tratamiento es también de 0.5
+
+En el anterior ejemplo, el tratamiento no tiene un efecto causal pues la probabilidad de morir con y sin el tratamiento es igual
+
+**Efecto causal promedio** en una población: un efecto causal promedio de `\(T\)` en el resultado `\(y\)` está presente si `\(P(y_{1i}=1)\neq P(y_{0i}=1)\)` en la población de interés
+
+Cuando pensamos en **poblaciones**, podemos usar expectativas para definir el efecto causal promedio, `\(E(y_{1i}) \neq E(y_{0i})\)`, lo cual permite generalizar a resultados no binarios
+
+La ausencia de efectos individuales promedio no implica ausencia de efectos individuales
+
+A la afirmación de que no hay efecto causal individual para ningún individuo, `\(y_{0i}=y_{1i}\)`, para todo `\(i\)`, la llamamos hipótesis **estricta** (*sharp*) de efecto de tratamiento nulo
+
+---
+
+# Variabilidad aleatoria
+
+En la práctica, casi nunca podemos observar a la población de interés, sino solo a una muestra
+
+Por tanto, `\(P(y_{ti}=y)\)` no puede ser observada sino estimada
+
+Debido al error muestral, la proporción que muere en la muestra no es numéricamente igual a la proporción que muere en la población
+
+La hipótesis que queremos probar es que hay un efecto causal en la población
+
+Pero al trabajar con muestras, puede haber diferencias que surjan solo por el muestreo
+
+Nuestra tarea es distinguir estas diferencias de los verdaderos efectos causales
+
+De esto hablarán ampliamente con Curtis Huffman
+
+---
+
+# Sesgo de selección
+
+¿Los hospitales hacen que la gente sea más sana?
+
+Podemos conseguir datos de encuestas sobre cuántas veces las personas han ido al hospital en el último año
+
+
+&lt;table class=" lightable-paper lightable-hover" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+&lt;tr&gt;&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important;" colspan="4"&gt;&lt;div style="TRUE"&gt;El efecto de los hospitales&lt;/div&gt;&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Grupo &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; N &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Salud (0-5) &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Error estándar &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Hospitalizados &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 7,774 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 3.21 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.014 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; No hospitalizados &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 90,049 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 3.93 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.003 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Diferencia &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.72 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (t) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; (58.9) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+¿Tiene sentido? ¿Los hospitales enferman?
+
+¿Qué sucede?
+
+---
+
+# Comparaciones observacionales
+
+Pensemos en términos del *Modelo de Rubin* de resultados potenciales
+
+`$$y_{i}=\begin{cases}
+y_{1i}=1\quad\text{si }D_i=1\\
+y_{0i}=0 \quad \text{si } D_i=0
+\end{cases}$$`
+
+
+Solo vemos al individuo en una situación, `\(y_i\)`:
+
+`$$y_i=y_{0i}+(y_{1i}-y_{0i})D_i$$`
+
+
+¿Qué nos dicen las comparaciones observacionales?
+
+Supongamos que tenemos acceso a datos sobre tratados y no tratados
+
+Podemos calcular `\(E(y_i|D_i=1)-E(y_i|D_i=0)\)`:
+
+$$
+`\begin{aligned}
+E(y_i|D_i=1)-E(y_i|D_i=0)=&amp;E(y_{1i}|D_i=1)-E(y_{0i}|D_i=0)+\\&amp; \underbrace{E(y_{0i}|D_i=1)-E(y_{0i}|D_i=1)}_0 
+\end{aligned}`
+$$
+
+---
+
+# Sesgo de selección
+
+Reordenando:
+
+$$
+`\begin{aligned}
+E(y_i|D_i=1)-E(y_i|D_i=0)=&amp;\overbrace{ E(y_{1i}|D_i=1)-E(y_{0i}|D_i=1)}^{\text{Efecto promedio en los tratados}}+\\&amp; \underbrace{E(y_{0i}|D_i=1)-E(y_{0i}|D_i=0)}_{\text{Sesgo de selección}}
+\end{aligned}`
+$$
+
+El primer término nos da la diferencia promedio en la variable de salud entre los hospitalizados y lo que les hubiera pasado si no hubieran sido hospitalizados
+
+En nuestro ejemplo, el **sesgo de selección** es la diferencia en salud entre los hospitalizados y los no hospitalizados
+
+Específicamente, si quienes van al hospital tienen una peor salud, podemos esperar que `\(E(y_{0i}|D_i=1)-E(y_{0i}|D_i=0)&lt;0\)`
+
+---
+
+# Sesgo de selección
+
+Al hacer aseveraciones basadas en comparaciones observacionales se incluye el efecto causal del tratamiento, pero también el sesgo de selección
+
+El sesgo de selección puede ser positivo o negativo
+
+El objetivo de las estrategias de evaluación es eliminar el sesgo de selección
+
+ALGO
+
+---
+
+# Tratamiento aleatorio
+
+Supongamos que tenemos la posibilidad de aleatorizar el tratamiento, es decir, hacer que `\(Y_i\)` y `\(D_i\)` sean independientes
+
+En ese caso, por independencia: `\(E(y_{0i}|D_i=0)=E(y_{0i}|D_i=1)\)`
+
+De la definición de comparación observacional:
+
+$$
+`\begin{aligned}
+E(y_i|D_i=1)-E(y_i|D_i=0)=&amp;E(y_{1i}|D_i=1)-E(y_{0i}|D_i=0)
+\end{aligned}`
+$$
+
+Sustituyendo el resultado de independencia:
+
+$$
+`\begin{aligned}
+E(y_i|D_i=1)-E(y_i|D_i=0)&amp;=E(y_{1i}|D_i=1)-E(y_{0i}|D_i=1) \\
+&amp; =E(y_{1i}-y_{0i}|D_i=1) \\
+&amp; =\underbrace{E(y_{1i}-y_{0i})}_{\text{Efecto causal}}
+\end{aligned}`
+$$
+
+---
+
+# Limitaciones
+
+La aleatorización resuelve muchas cosas, pero muchas veces no es factible
+
+¿Qué tendríamos que hacer en el caso de estudio, "¿Los hospitales matan?"
+
+Pensemos en un programa de empleo para personas que estuvieron en la cárcel
+
+Seguramente una comparación observacional indicaría que estos ganan menos que el resto de la población
+
+Pero esto no significa que el programa cause un efecto negativo en el ingreso
+
+Siempre tenemos que pensar en el contrafactual
+
+---
+
+class: inverse, middle, center
+
+
+# 2. Métodos experimentales para resolver el problema de selección
+
+---
+
+class: inverse, middle, center
+
+# 3. Tres pilares para una evaluación exitosa
+
+---
+
+# Tres pilares para una evaluación exitosa
+
+1. Teoría
+
+
+
+1. Diseño e implementación
+
+
+
+1. Econometría
+
+---
+
+class: inverse, middle, center
+
+# Primer pilar:
+
+## Teoría
+
+---
+
+# Un modelo teórico de esperanza aspiracional
+
+Banerjee et al. (2015): las microfinanzas pueden funcionar para algunos, pero no para todos
+
+Duflo (2012): la esperanza importa
+
+Multiples lecciones de la economía del comportamiento
+
+- Sistemas duales
+- Puntos de referencia y aversión a la pérdida
+- Carencia de auto control
+- Normas
+
+En esta presentación hablaré sobre un estudio basado en estas ideas
+
+Rojas, Wydick and Lybbert (2021), [Can hope elevate microfinance? Evidence from Oaxaca, Mexico]((https://academic.oup.com/oep/article/74/1/236/6154385?login=true)), *Oxford Economic Papers*
+
+---
+
+# Un modelo de la esperanza
+
+Concepto de esperanza de la teoría de Snyder (1993)
+
+- Aspiraciones
+
+- Avenidas
+
+- Habilidades
+
+Diferencia a la esperanza *deseosa* de la **esperanza aspiracional**
+
+Operacionalizamos estos conceptos en un modelo microeconómico
+
+- Aspiraciones: modeladas con una función de utilidad que depende de un punto de referencia (aspiración)
+
+- Avenidas: modeladas con una función de producción con restricciones
+
+- Habilidad: modelada con la productividad marginal del esfuerzo
+
+Ver [Wydick y Lybbert (2018)](https://www.journals.uchicago.edu/doi/full/10.1086/696968)
+
+---
+
+# Modelo microeconómico
+
+El problema de cada individuo es
+
+`$$\max_{\{e_{t}\}} U_{t+1}=E(u_{t+1})-c(e_t)$$`
+Sujeto a
+
+`\(Y_{t+1}=\pi e_t  + \pi_{\nu} \nu_{t+1}\)`
+
+
+`\(E(Y_{t+1})= \begin{cases} \pi e_t, &amp; \text{si } e_t &lt; \bar{e} \\ \bar{Y}, &amp; \text{si } e_t \geq \bar{e} \\ \end{cases}\)`
+
+`\(u=A\left(\frac{Y}{A}\right)^\frac{1}{1-\alpha} \mathcal{1}(Y&lt;A) + A\left(\frac{Y}{A}\right)^{1-\alpha} \mathcal{1}(Y\geq A)\)`
+
+`\(\pi \bar{e}=\bar{Y}\)`
+
+
+`\(\nu_{t+1} \sim \mathcal{N}(0,\,\sigma^{2})\)`
+
+`\(\alpha \in[0,\,1]\)`
+
+
+---
+
+class: inverse, middle, center
+
+# Segundo pilar:
+
+## Diseño e implementación
+
+---
+
+# Proyecto Esperanza en Oaxacca
+
+Colaboración con *Fuentes Libres*, una ONG cristiana
+
+Fuentes opera en el Valle de Oaxaca y en el Istmo de Tehuantepec
+
+En el momento del estudio tenía 52 grupos de ahorro y crédito (*bancos*)
+
+Aleatorizamos un tratamiento en parejas de bancos que tenían características similares
+
+- Localización
+- Oficial de banco
+- Tipos de negocio
+- Tamaño
+- Edad promedio
+
+En cada pareja, un banco es asignado a tratamiento y otro a control
+
+Tratamiento con tres componentes
+---
+
+# Documental *Historias de Esperanza*
+
+.center[
+&lt;iframe width="800" height="470" src="https://www.youtube.com/embed/gAidmWKCCD0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+]
+
+---
+
+# Documental *Historias de Esperanza*
+
+.center[
+&lt;img src="screenshot_doc.jpg" width="5040" /&gt;
+]
+---
+
+# Ejercicio de fijación de metas
+
+.center[
+&lt;img src="magnet.png" width="1636" /&gt;
+]
+---
+
+# Mini curso de fijación de conceptos
+
+.center[
+&lt;img src="curriculum_session.jpg" width="80%" /&gt;
+]
+
+
+---
+
+# Valle de Oaxaca
+
+.pull-left[
+![](http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-a-comp_orig.jpg)&lt;!-- --&gt;
+]
+
+.pull-right[
+![](http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-b-comp_orig.jpg)&lt;!-- --&gt;
+
+]
+
+
+---
+
+# Istmo de Tehuantepec
+
+
+
+.pull-left[
+![](http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-d-comp_orig.jpg)&lt;!-- --&gt;
+]
+
+.pull-right[
+![](http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-c-comp_orig.jpg)&lt;!-- --&gt;![](http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-e-comp_orig.png)&lt;!-- --&gt;
+
+]
+
+---
+
+# Datos
+
+Se recolecataron datos de cada socia en tres puntos del tiempo
+
+- En la línea base
+- Un mes después de la intervención
+- Un año después de la intervención
+
+Construimos índices de cada una de las dimensiones de la esperanza
+
+Por ejemplo, para el índice de agencia (que usaremos en la replicación), pedimos a cada socia que evaluara del 0 al 10 las siguientes expresiones:
+- ¿Qué tan importante es el trabajo duro para los negocios?
+- ¿Qué tan importante es la suerte para los negocios?
+- Mi futuro está determinado por mis propias acciones y no por las de otros
+- Es difícil para personas como yo ser líderes en la comunidad
+- Mujeres como yo pueden tener un impacto positivo en nuestra comunidad
+
+Recolectamos información sobre los negocios de las socias
+
+Tuvimos acceso a registros administrativos sobre ahorro y crédito
+
+---
+
+class: inverse, middle, center
+
+# Tercer pilar:
+
+## Econometría
+
+---
+
+# Integridad del diseño
+
+Para obtener un estimador consistente del efecto del tratamiento se debe cumplir que aquellas socias que recibieron la intervención son estadísticamente iguales a las socias que no la recibieron
+
+Se colectaron las siguientes características en la línea base y se verificó que fueran estadísticamente iguales entre el grupo tratado y el de control
+
+.pull-left[
+**Características predeterminadas**
+- Edad
+- Educación
+- Religió
+- Número de hijos
+- Líder del grupo
+- Tipo de negocio
+]
+
+.pull-right[
+**Variables de resultados**
+- Índice de aspiraciones
+- Índice de agencia
+- Índice de avenidas
+- Felicidad
+- Optimismo
+- Orientación al futuro
+- Aversión al riesgo
+- Horas trabajadas
+- Ventas
+- Ganancias
+- Ahorros
+- Empleados
+
+]
+
+---
+
+# Efecto del tratamiento
+
+Si la aleatorización fue exitosa, el efecto del tratamiento puede obtenerse comparando las variables de resultados entre el grupo de tratamiento y control, usando los datos de seguimiento, un año después de la intervención
+
+Lo anterior puede ser realizado con una regresión
+
+`$$y_{ij}=\alpha + \tau HopeGroup_j + X_i'\beta + \gamma D_p + \varepsilon_{i,t}$$`
+donde
+
+`\(y_{ij}\)` es la variable de impacto
+
+`\(HopeGroup_j\)` toma el valor de uno para las socias en el grupo de tratamiento y cero para las del grupo de control
+
+`\(X_i\)` son las características predeterminadas (ayudan a mejorar la precisión de la estimación)
+
+`\(D_p\)` es un indicador de las parejas
+
+Los errores estándar están agrupados a nivel banco
+
+
+---
+
+# ANCOVA
+
+[McKenzie (2015)](https://www.sciencedirect.com/science/article/pii/S030438781200003X) estudia recabar y analizar datos cuando las variables de impacto no tienen una alta correlación serial
+
+Con baja correlación serial, un estimador ANCOVA incrementa la precisión (entre [otros beneficios](https://blogs.worldbank.org/impactevaluations/collecting-more-rounds-of-data-to-boost-power-the-new-stuff))
+
+En el análisis extendemos la ecuación a estimar como
+
+`$$y_{ij}=\alpha + \tau HopeGroup_j + X_i'\beta + \alpha_1 y_{ij,0} + \alpha_2 My_{ij,0}+ \gamma D_p + \varepsilon_{i,t}$$`
+
+donde
+
+`\(y_{ij,0}\)` es el valor de la variable de impacto en la línea base
+
+
+`\(My_{ij,0}\)` es igual a 1 si el valor de la variable de impacto en la línea base es faltante y cero en otro caso
+
+Los errores estándar están agrupados a nivel banco
+
+
+---
+
+# Inferencia por aleatorización
+
+Es un [método para calcular los valores `\(p\)`](https://jasonkerwin.com/nonparibus/2017/09/25/randomization-inference-vs-bootstrapping-p-values/) en una prueba de hipótesis
+
+En un experimento, sabemos qué unidades son asignadas a tratamiento y control y por medio de qué mecanismo
+
+Inferencia por aleatorización considera **qué hubiera pasado** bajo **todas** las posibles asignaciones aleatorias, no solo la que se llevó a cabo en el experimento
+
+El procedimiento se basa en la idea de que el efecto observado. `\(\beta_T\)`, puede ser debido no al tratamiento, sino simplemente a qué grupos fueron asignados a tratamiento y a control
+
+Algoritmo:
+
+2. Reasignar el tratamiento con el mismo procedimiento que como ocurrió en el experimento
+3. Reestimar `\(\beta_{T,s}\)` con la asignación de 1
+4. Repetir 1 y 2 `\(S\)` veces (1,000 quizás)
+5. Comparar `\(\beta_T\)` con la distribución de los `\(\beta_{T,s}\)` y preguntárnos, ¿qué tan común o anormal es el `\(\beta_T\)` estimado con la muestra del experimento?
+
+---
+
+# Efecto del tratamiento
+
+
+![](http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/ancova-combined_orig.png)&lt;!-- --&gt;
+
+Nota: Efectos en las variables de impacto estandarizadas
+
+---
+
+# Resumen de los resultados
+
+Los datos respaldan la hipótesis de una función de utilidad que depende de las aspiraciones (ver artículo)
+
+Hay un efecto positivo del tratamiento sobre las aspiraciones en el corto plazo
+
+La agencia y las agenidas responden lentamente, pero se desplazan significativamente después de un año
+
+Hay un efecto del tratamiento sobre el índice de desempeño de negocios (explicado por el número de empleados)
+
+Hay un efecto significantivo del tratamiento en la sobrevivencia de los bancos (ver artículo)
+
+---
+
+class: inverse, middle, center
+
+# 5. Ejercicio de replicación en R
+
+---
+
+# Paquetes que usaremos
+
+- *tidyverse*: manejo de datos
+
+- *haven*: leer datos de múltiples formatos
+
+- *sandwich*: estimación de errores robustos y agrupados
+
+- *modelsummary*: presentar resultados en tablas
+
+- *ri2*: realizar inferencia por aleatorización
+
+
+---
+# Descripción de variables
+
+Los datos que usaremos se encuentran en el archivo *analysis_dataset.dta*
+
+
+
+```r
+data &lt;- haven::read_dta("data/analysis_dataset.dta")
+```
+
+Consideremos la variable **educ**, que indica la educación de la socia en años
+
+Usando los datos de la línea base sabemos que la edad promedio de las socias es de 7.62 años
+
+
+```r
+bl &lt;- data %&gt;% 
+  filter(t==0)
+
+summary(bl$educ)
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##    0.00    6.00    9.00    7.62    9.00   21.00       3
+```
+---
+
+# El balance
+
+Para estimar de forma consistente el efecto del tratamiento debe suceder que la asignación al tratamiento sea independiente de las características de las socias en la línea base
+
+Veamos la media de la educación de quienes recibieron y no recibieron el tratamiento
+
+
+```r
+#Por grupos
+bl %&gt;% 
+  group_by(hopegroup) %&gt;%
+  summarize(mean=mean(educ,na.rm=T)) %&gt;% 
+  ungroup()
+```
+
+```
+## # A tibble: 2 × 2
+##   hopegroup  mean
+##       &lt;dbl&gt; &lt;dbl&gt;
+## 1         0  7.31
+## 2         1  7.87
+```
+
+---
+
+# El balance
+
+Hacemos una prueba de diferencia de medias
+
+Planteamos una hipótesis nula `\(H0: educ_{tratadas}=educ_{no tratadas}\)`
+
+Construimos un estadístico `\(t\)` y formulamos una regla de decisión
+
+Si `\(p&lt;\alpha=0.05\)` rechazamos la `\(H_0\)`
+
+.scroll-output[
+
+
+```r
+t.test(educ ~ hopegroup,
+       data = bl)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  educ by hopegroup
+## t = -1.5771, df = 533.39, p-value = 0.1154
+## alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+## 95 percent confidence interval:
+##  -1.2465200  0.1363455
+## sample estimates:
+## mean in group 0 mean in group 1 
+##        7.313765        7.868852
+```
+]
+---
+
+# El balance
+
+Podemos hacer uso de una regresión lineal para hacer exactamente lo mismo
+
+`$$educ_i=\gamma_0 + \gamma_1 HopeGroup_i + e_i$$`
+
+
+```r
+summary(m1 &lt;- lm(educ ~ hopegroup,
+   data = bl))$coef[,c(1:2,4)]
+```
+
+```
+##              Estimate Std. Error      Pr(&gt;|t|)
+## (Intercept) 7.3137652  0.2626090 3.798815e-107
+## hopegroup   0.5550873  0.3532882  1.167107e-01
+```
+
+---
+
+# El balance
+
+Sin embargo, la prueba realizada anteriormente asume que los errores son independientes e idénticamente distribuidos (iid)
+
+En otras palabras, que los individuos en nuestra muestra reciben choques aleatorios que no están correlacionados
+
+Esto no sucede en nuestro caso: tenemos socias que son parte de grupos de crédito y ahorro y que, por tanto, reciben choques que están correlacionados (mercado laboral, clima, programas)
+
+Debemos tomar en cuenta que estos errores no son independientes para estimar correctamente la matriz de varianzas de `\(\hat{\beta}\)`
+
+---
+
+# El balance
+
+La función *lm_robust* funciona como *lm* pero podemos especificar errores agrupados
+
+
+```r
+summary(m1r &lt;- lm_robust(educ ~ hopegroup,
+                         clusters = communitybank,
+                         se_type = "CR0",
+                         data = bl))$coef[,c(1:2,4)]
+```
+
+```
+##              Estimate Std. Error     Pr(&gt;|t|)
+## (Intercept) 7.3137652  0.4519871 9.897799e-22
+## hopegroup   0.5550873  0.5958180 3.559126e-01
+```
+---
+
+# El balance
+
+En una evaluación, tenemos que verificar el supuesto de independencia al mostrar evidencia de que las características de los individuos **antes** de la intervención no difieren entre tratados y no tratados
+
+Estimo una regresión para cada características usando la especificación que usé antes para la educación
+
+Guardo los resultados en una lista llamada *models*
+
+
+```r
+#Para el resto de los covariables
+models &lt;- list()
+
+models[['Edad']] &lt;- lm_robust(age ~ hopegroup,
+                                   clusters = communitybank,
+                                   se_type = "CR0",
+                                   data = bl)
+
+models[['Educación']] &lt;- lm_robust(educ ~ hopegroup,
+                         clusters = communitybank,
+                         se_type = "CR0",
+                         data = bl)
+```
+
+
+
+---
+
+# El balance
+
+Puedo presentar los resultados de estimar la misma especificación para varias características usando *modelsummary*
+
+
+```r
+modelsummary::modelsummary(models,
+                           statistic = "std.error",
+                           coef_map = c('hopegroup' = "Hope Group"),
+                           coef_omit = "Intercept",
+                           gof_omit = 'DF|Deviance|R2|AIC|BIC',
+                           stars=c('*' = .1, '**' = .05, '***'=0.01),
+                           title = "Balance de X en línea base")
+```
+---
+
+# El efecto del tratamiento
+
+Si el supuesto de independencia se cumple, el efecto del tratamiento en una variable `\(y\)` puede ser identificado simplmente al comparar `\(y\)` para tratados y no tratados **después de la intervención**
+
+Sabemos que podemos hacer esto con una regresión como sigue
+
+`$$y_i=\beta_0+\beta_1 HopeGroup_i + \varepsilon_i$$`
+
+donde `\(\hat{\beta_1}\)` es el efecto del tratamiento
+
+Estimemos el efecto de haber sido asignado a la intervención del Proyecto Esperanza sobre un índice de agencia, **StdAnderAgencyIndex** usando los datos recabados un año después del tratamiento
+
+---
+
+# El efecto del tratamiento
+
+Primero estimemos una regresión con errores robustos (ignorando errores agrupados)
+
+
+```r
+summary(e0a &lt;- lm_robust(StdAnderAgencyIndex ~ hopegroup,
+                        se_type = "HC1",
+                        data = filter(data, t==2)))$coef[1:2, c(1:2,4)]
+```
+
+```
+##                Estimate Std. Error   Pr(&gt;|t|)
+## (Intercept) -0.03987771 0.05810099 0.49270936
+## hopegroup    0.14335812 0.07427787 0.05399089
+```
+
+El tratamiento tiene un efecto positivo de 0.14 `\(\sigma\)` en el índice de agencia
+
+Este efecto es estadísticamente significativo (0.054)
+
+---
+
+# El efecto del tratamiento
+
+Notemos qué pasa cuando agregamos un vector de *controles*
+
+Es común en evaluación estimar una *regresión larga*
+
+`$$y_i=\beta_0+\beta_1 HopeGroup_i + BX_i +  \varepsilon_i$$`
+
+donde `\(X_i\)` representa un vector de características que explican `\(y_i\)`, pero que no fueron afectadas por el tratamiento
+
+
+```r
+summary(e0b &lt;- lm_robust(StdAnderAgencyIndex ~ hopegroup + age + educ + evangelical + children + children_under_18 + bankleader + Dwelling_Index,
+                        se_type = "HC1",
+                        data = filter(data, t==2)))$coef[1:2,c(1:2,4)]
+```
+
+```
+##               Estimate Std. Error  Pr(&gt;|t|)
+## (Intercept) -0.3404422 0.22381402 0.1286735
+## hopegroup    0.1211102 0.07224569 0.0940989
+```
+---
+
+# El efecto del tratamiento
+
+Primero hagamos más corto lo que tenemos que escribir
+
+
+```r
+X &lt;- c("hopegroup", "age", "educ", "evangelical", "children", "children_under_18", "bankleader", "Dwelling_Index")
+
+reglarga &lt;- as.formula(paste("StdAnderAgencyIndex ~ ",
+                             paste(X, collapse= "+")))
+
+reglarga
+```
+
+```
+## StdAnderAgencyIndex ~ hopegroup + age + educ + evangelical + 
+##     children + children_under_18 + bankleader + Dwelling_Index
+```
+---
+
+# El efecto del tratamiento
+
+Podemos sustituir *reglarga* en la parte donde va la especificación de la regresión
+
+
+```r
+summary(e1 &lt;- lm_robust(reglarga,
+                        clusters = communitybank,
+                        se_type = "CR0",
+                        data = filter(data, t==2)))$coef[1:2,c(1:2,4)]
+```
+
+```
+##               Estimate Std. Error  Pr(&gt;|t|)
+## (Intercept) -0.3404422  0.2473972 0.1748049
+## hopegroup    0.1211102  0.1007387 0.2348301
+```
+---
+
+# El efecto del tratamiento
+
+Recordemos que la aleatorización ocurrió por parejas,
+entonces debemos incluir efectos fijos por parejas para comparar entre socias de grupos comparables
+
+
+
+```r
+summary(e2 &lt;- lm_robust(reglarga,
+                        fixed_effects = pair_number,
+                        clusters = communitybank,
+                        se_type = "CR0",
+                        data = filter(data, t==2)))$coef[1:2,c(1:2,4)]
+```
+
+```
+##               Estimate  Std. Error   Pr(&gt;|t|)
+## hopegroup  0.143526819 0.068752972 0.04185097
+## age       -0.005845114 0.004119949 0.16205893
+```
+
+---
+
+# El efecto del tratamiento
+
+Comparamos las estimaciones que hemos hecho hasta ahora
+
+
+```r
+modelsummary::modelsummary(list('Errores Robustos'=e0a,
+                                'Errores Robustos + X'=e0b,
+                                'Errores agrupados + X'=e1,
+                                'Errores agrupados + X + parejas'=e2),
+                           statistic = "std.error",
+                           coef_map = c('hopegroup' = "Hope Group"),
+                           coef_omit = "Intercept",
+                           gof_omit = 'DF|Deviance|R2|AIC|BIC',
+                           stars=c('*' = .1, '**' = .05, '***'=0.01),
+                           title = "Efectos de tratamiento en el índice de agencia 12 meses después de la intervención")
+```
+
+---
+
+# ANCOVA
+
+Introducimos el valor en la línea base del índice de agencia y un indicador de si dicho valor no fue colectado en la línea base
+
+
+```r
+X &lt;- c("hopegroup", "age", "educ", "evangelical", "children", "children_under_18", "bankleader", "Dwelling_Index", "Baseline_StdAnderAgencyIndex", "M_Baseline_StdAnderAgencyIndex")
+
+reglarga &lt;- as.formula(paste("StdAnderAgencyIndex ~ ",
+                             paste(X, collapse= "+")))
+
+summary(e3 &lt;- lm_robust(reglarga,
+                        fixed_effects = pair_number,
+                        clusters = communitybank,
+                        se_type = "CR0",
+                        data = filter(data, t==2)))$coef[,c(1:2,4)]
+```
+
+---
+
+# Inferencia por aleatorización
+
+Declaramos la estructura del experimento
+
+- Clusters: bancos
+- Bloques: parejas
+
+Usamos los datos del seguimiento de un año
+
+.pull-left[
+
+```r
+set.seed(322)
+
+df &lt;- filter(data, t==2)
+
+declaration &lt;- 
+  with(df,{
+    declare_ra(
+      blocks = pair_number, # bloques = parejas
+      clusters = id_g, # clusters o grupos = bancos
+      )
+  })
+```
+]
+
+.pull-right[
+
+```
+## Random assignment procedure: Blocked and clustered random assignment 
+## Number of units: 732 
+## Number of blocks: 26
+## Number of clusters: 52
+## Number of treatment arms: 2 
+## The possible treatment categories are 0 and 1.
+## The number of possible random assignments is 67108864.  
+## The probabilities of assignment are constant across units: 
+## prob_0 prob_1 
+##    0.5    0.5
+```
+]
+---
+
+# Inferencia por aleatorización
+
+La función *conduct_ri* realiza la asignación y la estimación en cada una de las `\(s\)` repeticiones
+
+
+```r
+ri &lt;- conduct_ri(
+  StdAnderAgencyIndex ~ hopegroup,
+  assignment = "hopegroup",
+  sharp_hypothesis = 0,
+  declaration = declaration,
+  data = df,
+  sims = 1000
+)
+
+summary(ri)
+```
+
+```
+##        term  estimate two_tailed_p_value
+## 1 hopegroup 0.1433581              0.204
+```
+
+En el 20% de las 1,000 repeticiones el efecto estimado fue al menos tan grande como el efecto de 0.1613 con los datos del experimento
+
+El valor `\(p\)` estimado es 0.206
+
+---
+
+# Inferencia por aleatorización
+
+Agregamos controles
+
+
+```r
+ri &lt;- conduct_ri(
+  StdAnderAgencyIndex ~ hopegroup +
+  age + educ + evangelical + children + children_under_18 + bankleader + Dwelling_Index +
+  factor(pair_number) + Baseline_StdAnderAgencyIndex +M_Baseline_StdAnderAgencyIndex,
+  assignment = "hopegroup",
+  sharp_hypothesis = 0,
+  declaration = declaration,
+  data = df,
+  sims = 1000
+)
+
+summary(ri)
+```
+
+```
+##        term  estimate two_tailed_p_value
+## 1 hopegroup 0.1612457              0.077
+```
+
+El valor `\(p\)` es de 0.077
+
+Esto contrasta con el valor `\(p\)` obtenido de forma tradicional de 0.06
+
+---
+
+class: inverse, middle, center
+
+# 6. Reflexiones finales
+
+---
+
+# Reflexiones finales
+
+1. Conozcan su teoría
+
+2. Cosas a considerar en el diseño y la implementación
+  - Escala
+  - Ética
+  - Costo
+  - Compromiso entre las partes
+
+3. Análisis
+  - Pre registro de estudios
+  - Métodos apropiados para el diseño apropiado
+  - La econometría no resuelve un mal diseño
+
+4. Siempre habrá problemas
+
+5. Estamos para apoyar
+
+
+---
+
+class: center, middle, inverse
+
+# ¡Gracias!
+
+.author[
+### [rojasirvin.com](https://www.rojasirvin.com/) &lt;br&gt; [&lt;i class="fab fa-github"&gt;&lt;/i&gt;](https://github.com/rojasirvin) [&lt;i class="fab fa-twitter"&gt;&lt;/i&gt;](https://twitter.com/RojasIrvin) [&lt;i class="ai ai-google-scholar"&gt;&lt;/i&gt;](https://scholar.google.com/citations?user=FUwdSTMAAAAJ&amp;hl=en)
+]
+
+&lt;br/&gt;
+
+&lt;br/&gt;
+
+
+Presentación creada usando el paquete [**xaringan**](https://github.com/yihui/xaringan) en R.
+
+El chakra viene de [remark.js](https://remarkjs.com), [**knitr**](https://yihui.org/knitr/), y [R Markdown](https://rmarkdown.rstudio.com).
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
