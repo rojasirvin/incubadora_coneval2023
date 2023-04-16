@@ -1,0 +1,17 @@
+.inverse, .hljs-github {
+  background-image: url(fondo-diapo.png);
+  background-size: cover;
+}
+
+h1, h2, h3 {
+  color: #2C4A9A;
+}
+
+a, a > code {
+  color: rgb(20, 155, 60);
+  text-decoration: none;
+}
+
+.inverse .remark-slide-number {
+  display: none;
+}

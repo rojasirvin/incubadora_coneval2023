@@ -8,16 +8,20 @@ date: "Abril de 2023"
 #date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
-    css: [default, metropolis, metropolis-fonts, "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap-grid.min.css", "https://use.fontawesome.com/releases/v5.7.2/css/all.css", "https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css"]
+    css: [default, metropolis-fonts, "adiciones.css",
+    "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap-grid.min.css", "https://use.fontawesome.com/releases/v5.7.2/css/all.css", "https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css"]
     seal: false
     lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+      ratio: 16:9
 ---
+class: title-slide, inverse
+background-image: url('portada.png')
+background-size: cover
 
-class: title-slide, inverse, center, middle
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE,
@@ -46,6 +50,13 @@ xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
 }
 ```
 
+---
+
+class: title-slide, inverse
+
+background-image: url('fondo-titulo.png')
+background-size: cover
+
 .title[
 # Evaluación Experimental
 ]
@@ -58,10 +69,8 @@ xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
 ### Irvin Rojas <br> [rojasirvin.com](https://www.rojasirvin.com/) <br> [<i class="fab fa-github"></i>](https://github.com/rojasirvin) [<i class="fab fa-twitter"></i>](https://twitter.com/RojasIrvin) [<i class="ai ai-google-scholar"></i>](https://scholar.google.com/citations?user=FUwdSTMAAAAJ&hl=en)
 ]
 
-<br/>
-
 .affiliation[
-### Centro de Investigación y Docencia Económicas <br> División de Economía  <br>  <br> Actualización: `r Sys.Date()`
+#### Centro de Investigación y Docencia Económicas <br> División de Economía  <br>  <br> Actualización: `r Sys.Date()`
 ]
 
 
@@ -73,13 +82,11 @@ xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
 
 1. Métodos experimentales para resolver el problema de selección
 
-1. Tres pilares para una evaluación exitosa
+1. Tres pilares para una evaluación exitosa: aplicación del *Proyecto Esperanza*
 
   - Teoría
   - Diseño e implementación
   - Econometría
-
-1. Aplicación del *Proyecto Esperanza*
 
 1. Ejercicio de replicación
 
@@ -88,7 +95,10 @@ xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
 
 ---
 
-class: inverse, middle, center
+class: middle, center
+
+background-image: url('fondo-subtitulo.png')
+background-size: cover
 
 # 1. Causalidad y sesgo de selección
 
@@ -176,7 +186,7 @@ table.personas %>%
   add_header_above(c("Efectos individuales" = 3 ),
                    bold = TRUE,
                    background = "white") %>% 
-    scroll_box(height = "70%")
+    scroll_box(height = "60%")
 
 ```
 
@@ -217,13 +227,13 @@ Pero al trabajar con muestras, puede haber diferencias que surjan solo por el mu
 
 Nuestra tarea es distinguir estas diferencias de los verdaderos efectos causales
 
-De esto hablarán ampliamente con Curtis Huffman
+De esto hablarán ampliamente con **Curtis Huffman**
 
 ---
 
 # Sesgo de selección
 
-¿Los hospitales hacen que la gente sea más sana?
+¿Los hospitales hacen que la gente sea más sana? (Angrist & Pischke, 2009)
 
 Podemos conseguir datos de encuestas sobre cuántas veces las personas han ido al hospital en el último año
 
@@ -312,14 +322,22 @@ El sesgo de selección puede ser positivo o negativo
 
 El objetivo de las estrategias de evaluación es eliminar el sesgo de selección
 
+---
+
+class: middle, center
+
+background-image: url('fondo-subtitulo.png')
+background-size: cover
+
+# 2. Métodos experimentales para resolver el problema de selección
 
 ---
 
 # Tratamiento aleatorio
 
-Supongamos que tenemos la posibilidad de aleatorizar el tratamiento, es decir, hacer que $Y_i$ y $D_i$ sean independientes
+Supongamos que tenemos la posibilidad de aleatorizar el tratamiento, es decir, hacer que $y_i$ y $D_i$ sean independientes
 
-En ese caso, por independencia: $E(y_{0i}|D_i=0)=E(y_{0i}|D_i=1)$
+En ese caso, por el **supuesto de independencia**: $E(y_{0i}|D_i=0)=E(y_{0i}|D_i=1)$
 
 De la definición de comparación observacional:
 
@@ -338,6 +356,23 @@ E(y_i|D_i=1)-E(y_i|D_i=0)&=E(y_{1i}|D_i=1)-E(y_{0i}|D_i=1) \\
 & =\underbrace{E(y_{1i}-y_{0i})}_{\text{Efecto causal}}
 \end{aligned}
 $$
+---
+
+# Implicaciones
+
+Este simple resultado es muy poderoso
+
+Si podemos asegurarnos que el tratamiento es independiente de la variable de resultados, una comparación de dicha variable de resultados entre grupos de individuos tratados y no tratados nos dará el efecto del tratamiento
+
+Una manera de hacer que $y_i$ y $D_i$ sean independientes es asignando individuos a los grupos de tratamiento y control, por ejemplo, con un sorteo
+
+En la práctica, debemos asegurarnos que el pertenecer al grupo de tratamiento o control no se relaciona con:
+- Valores de $y_i$
+- Características $X_i$ que puedan determinar $y_i$
+
+Esto es lo que queremos decir cuando enunciamos que *los grupos de tratamiento y control deben ser estadísticamente idénticos*
+
+Los métodos no experimentales consisten en hacer supuestos estadísticos para que el supuesto de independencia se cumpla
 
 ---
 
@@ -357,34 +392,33 @@ Siempre tenemos que pensar en el contrafactual
 
 ---
 
-class: inverse, middle, center
+class: middle, center
 
-
-# 2. Métodos experimentales para resolver el problema de selección
-
----
-
-class: inverse, middle, center
+background-image: url('fondo-subtitulo.png')
+background-size: cover
 
 # 3. Tres pilares para una evaluación exitosa
+# Aplicación del *Proyecto Esperanza*
 
 ---
 
 # Tres pilares para una evaluación exitosa
 
+Enfatizaremos el papel de los tres pilares para una evaluación exitosa
+
 1. Teoría
-
-
 
 1. Diseño e implementación
 
-
-
 1. Econometría
+
+No son solamente aplicables a las evaluaciones experimentales
+
+Verán los aspectos relevantes para evaluaciones no experimentales con **Francisco Cabrera**
 
 ---
 
-class: inverse, middle, center
+class: middle, center
 
 # Primer pilar:
 
@@ -407,7 +441,7 @@ Multiples lecciones de la economía del comportamiento
 
 En esta presentación hablaré sobre un estudio basado en estas ideas
 
-Rojas, Wydick and Lybbert (2021), [Can hope elevate microfinance? Evidence from Oaxaca, Mexico]((https://academic.oup.com/oep/article/74/1/236/6154385?login=true)), *Oxford Economic Papers*
+Rojas, Wydick and Lybbert (2021), [Can hope elevate microfinance? Evidence from Oaxaca, Mexico](https://academic.oup.com/oep/article/74/1/236/6154385?login=true), *Oxford Economic Papers*
 
 ---
 
@@ -459,7 +493,7 @@ $\alpha \in[0,\,1]$
 
 ---
 
-class: inverse, middle, center
+class: middle, center
 
 # Segundo pilar:
 
@@ -491,7 +525,7 @@ Tratamiento con tres componentes
 # Documental *Historias de Esperanza*
 
 .center[
-<iframe width="800" height="470" src="https://www.youtube.com/embed/gAidmWKCCD0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="700" height="400" src="https://www.youtube.com/embed/gAidmWKCCD0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ]
 
 ---
@@ -499,7 +533,7 @@ Tratamiento con tres componentes
 # Documental *Historias de Esperanza*
 
 .center[
-```{r}
+```{r, out.width = "800px"}
 knitr::include_graphics("screenshot_doc.jpg")
 ``` 
 ]
@@ -508,7 +542,7 @@ knitr::include_graphics("screenshot_doc.jpg")
 # Ejercicio de fijación de metas
 
 .center[
-```{r}
+```{r, out.width = "1000px"}
 knitr::include_graphics("magnet.png")
 ``` 
 ]
@@ -517,7 +551,7 @@ knitr::include_graphics("magnet.png")
 # Mini curso de fijación de conceptos
 
 .center[
-```{r out.width="80%"}
+```{r, out.width="55%"}
 knitr::include_graphics("curriculum_session.jpg")
 ``` 
 ]
@@ -528,13 +562,13 @@ knitr::include_graphics("curriculum_session.jpg")
 # Valle de Oaxaca
 
 .pull-left[
-```{r}
+```{r, out.width = "320px"}
 knitr::include_graphics("http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-a-comp_orig.jpg")
 ```
 ]
 
 .pull-right[
-```{r}
+```{r, out.width = "320px"}
 knitr::include_graphics("http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-b-comp_orig.jpg")
 ```
 
@@ -548,13 +582,13 @@ knitr::include_graphics("http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80
 
 
 .pull-left[
-```{r}
+```{r, out.width = "350px"}
 knitr::include_graphics("http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-d-comp_orig.jpg")
 ```
 ]
 
 .pull-right[
-```{r}
+```{r, out.width = "350px"}
 knitr::include_graphics("http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-c-comp_orig.jpg")
 
 knitr::include_graphics("http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-e-comp_orig.png")
@@ -587,7 +621,7 @@ Tuvimos acceso a registros administrativos sobre ahorro y crédito
 
 ---
 
-class: inverse, middle, center
+class: middle, center
 
 # Tercer pilar:
 
@@ -597,9 +631,7 @@ class: inverse, middle, center
 
 # Integridad del diseño
 
-Para obtener un estimador consistente del efecto del tratamiento se debe cumplir que aquellas socias que recibieron la intervención son estadísticamente iguales a las socias que no la recibieron
-
-Se colectaron las siguientes características en la línea base y se verificó que fueran estadísticamente iguales entre el grupo tratado y el de control
+Se colectaron las siguientes características en la línea base y se realizó una prueba de diferencia de medias entre el grupo de tratamiento y el grupo de control
 
 .pull-left[
 **Características predeterminadas**
@@ -625,7 +657,6 @@ Se colectaron las siguientes características en la línea base y se verificó q
 - Ganancias
 - Ahorros
 - Empleados
-
 ]
 
 ---
@@ -696,7 +727,7 @@ Algoritmo:
 # Efecto del tratamiento
 
 
-```{r}
+```{r, out.width="70%", fig.align = 'center'}
 knitr::include_graphics("http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/ancova-combined_orig.png")
 ```
 
@@ -718,7 +749,10 @@ Hay un efecto significantivo del tratamiento en la sobrevivencia de los bancos (
 
 ---
 
-class: inverse, middle, center
+class: middle, center
+
+background-image: url('fondo-subtitulo.png')
+background-size: cover
 
 # 5. Ejercicio de replicación en R
 
@@ -1096,7 +1130,10 @@ Esto contrasta con el valor $p$ obtenido de forma tradicional de 0.06
 
 ---
 
-class: inverse, middle, center
+class: middle, center
+
+background-image: url('fondo-subtitulo.png')
+background-size: cover
 
 # 6. Reflexiones finales
 
@@ -1124,7 +1161,7 @@ class: inverse, middle, center
 
 ---
 
-class: center, middle, inverse
+class: center, middle
 
 # ¡Gracias!
 

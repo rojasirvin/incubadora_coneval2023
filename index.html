@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <script src="libs/header-attrs-2.17/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
     <script src="libs/kePrint-0.0.1/kePrint.js"></script>
     <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="adiciones.css" type="text/css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap-grid.min.css" type="text/css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" type="text/css" />
     <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css" type="text/css" />
@@ -16,8 +16,10 @@
   <body>
     <textarea id="source">
 
+class: title-slide, inverse
+background-image: url('portada.png')
+background-size: cover
 
-class: title-slide, inverse, center, middle
 
 
 
@@ -29,6 +31,13 @@ class: title-slide, inverse, center, middle
   font-size: 60% !important;
 }
 &lt;/style&gt;
+
+---
+
+class: title-slide, inverse
+
+background-image: url('fondo-titulo.png')
+background-size: cover
 
 .title[
 # Evaluación Experimental
@@ -42,10 +51,8 @@ class: title-slide, inverse, center, middle
 ### Irvin Rojas &lt;br&gt; [rojasirvin.com](https://www.rojasirvin.com/) &lt;br&gt; [&lt;i class="fab fa-github"&gt;&lt;/i&gt;](https://github.com/rojasirvin) [&lt;i class="fab fa-twitter"&gt;&lt;/i&gt;](https://twitter.com/RojasIrvin) [&lt;i class="ai ai-google-scholar"&gt;&lt;/i&gt;](https://scholar.google.com/citations?user=FUwdSTMAAAAJ&amp;hl=en)
 ]
 
-&lt;br/&gt;
-
 .affiliation[
-### Centro de Investigación y Docencia Económicas &lt;br&gt; División de Economía  &lt;br&gt;  &lt;br&gt; Actualización: 2023-04-12
+#### Centro de Investigación y Docencia Económicas &lt;br&gt; División de Economía  &lt;br&gt;  &lt;br&gt; Actualización: 2023-04-16
 ]
 
 
@@ -57,13 +64,11 @@ class: title-slide, inverse, center, middle
 
 1. Métodos experimentales para resolver el problema de selección
 
-1. Tres pilares para una evaluación exitosa
+1. Tres pilares para una evaluación exitosa: aplicación del *Proyecto Esperanza*
 
   - Teoría
   - Diseño e implementación
   - Econometría
-
-1. Aplicación del *Proyecto Esperanza*
 
 1. Ejercicio de replicación
 
@@ -72,7 +77,10 @@ class: title-slide, inverse, center, middle
 
 ---
 
-class: inverse, middle, center
+class: middle, center
+
+background-image: url('fondo-subtitulo.png')
+background-size: cover
 
 # 1. Causalidad y sesgo de selección
 
@@ -142,7 +150,7 @@ En general, el efecto causal para un individuo no puede ser identificado
 
 Supongamos que podemos estudiar a la familia de Zeus, `\(N=20\)`
 
-&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:70%; "&gt;&lt;table class=" lightable-paper lightable-hover" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:60%; "&gt;&lt;table class=" lightable-paper lightable-hover" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;'&gt;
  &lt;thead&gt;
 &lt;tr&gt;&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important;position: sticky; top:0; background-color: #FFFFFF;" colspan="3"&gt;&lt;div style="TRUE"&gt;Efectos individuales&lt;/div&gt;&lt;/th&gt;&lt;/tr&gt;
   &lt;tr&gt;
@@ -292,13 +300,13 @@ Pero al trabajar con muestras, puede haber diferencias que surjan solo por el mu
 
 Nuestra tarea es distinguir estas diferencias de los verdaderos efectos causales
 
-De esto hablarán ampliamente con Curtis Huffman
+De esto hablarán ampliamente con **Curtis Huffman**
 
 ---
 
 # Sesgo de selección
 
-¿Los hospitales hacen que la gente sea más sana?
+¿Los hospitales hacen que la gente sea más sana? (Angrist &amp; Pischke, 2009)
 
 Podemos conseguir datos de encuestas sobre cuántas veces las personas han ido al hospital en el último año
 
@@ -402,14 +410,22 @@ El sesgo de selección puede ser positivo o negativo
 
 El objetivo de las estrategias de evaluación es eliminar el sesgo de selección
 
+---
+
+class: middle, center
+
+background-image: url('fondo-subtitulo.png')
+background-size: cover
+
+# 2. Métodos experimentales para resolver el problema de selección
 
 ---
 
 # Tratamiento aleatorio
 
-Supongamos que tenemos la posibilidad de aleatorizar el tratamiento, es decir, hacer que `\(Y_i\)` y `\(D_i\)` sean independientes
+Supongamos que tenemos la posibilidad de aleatorizar el tratamiento, es decir, hacer que `\(y_i\)` y `\(D_i\)` sean independientes
 
-En ese caso, por independencia: `\(E(y_{0i}|D_i=0)=E(y_{0i}|D_i=1)\)`
+En ese caso, por el **supuesto de independencia**: `\(E(y_{0i}|D_i=0)=E(y_{0i}|D_i=1)\)`
 
 De la definición de comparación observacional:
 
@@ -428,6 +444,23 @@ E(y_i|D_i=1)-E(y_i|D_i=0)&amp;=E(y_{1i}|D_i=1)-E(y_{0i}|D_i=1) \\
 &amp; =\underbrace{E(y_{1i}-y_{0i})}_{\text{Efecto causal}}
 \end{aligned}`
 $$
+---
+
+# Implicaciones
+
+Este simple resultado es muy poderoso
+
+Si podemos asegurarnos que el tratamiento es independiente de la variable de resultados, una comparación de dicha variable de resultados entre grupos de individuos tratados y no tratados nos dará el efecto del tratamiento
+
+Una manera de hacer que `\(y_i\)` y `\(D_i\)` sean independientes es asignando individuos a los grupos de tratamiento y control, por ejemplo, con un sorteo
+
+En la práctica, debemos asegurarnos que el pertenecer al grupo de tratamiento o control no se relaciona con:
+- Valores de `\(y_i\)`
+- Características `\(X_i\)` que puedan determinar `\(y_i\)`
+
+Esto es lo que queremos decir cuando enunciamos que *los grupos de tratamiento y control deben ser estadísticamente idénticos*
+
+Los métodos no experimentales consisten en hacer supuestos estadísticos para que el supuesto de independencia se cumpla
 
 ---
 
@@ -447,34 +480,33 @@ Siempre tenemos que pensar en el contrafactual
 
 ---
 
-class: inverse, middle, center
+class: middle, center
 
-
-# 2. Métodos experimentales para resolver el problema de selección
-
----
-
-class: inverse, middle, center
+background-image: url('fondo-subtitulo.png')
+background-size: cover
 
 # 3. Tres pilares para una evaluación exitosa
+# Aplicación del *Proyecto Esperanza*
 
 ---
 
 # Tres pilares para una evaluación exitosa
 
+Enfatizaremos el papel de los tres pilares para una evaluación exitosa
+
 1. Teoría
-
-
 
 1. Diseño e implementación
 
-
-
 1. Econometría
+
+No son solamente aplicables a las evaluaciones experimentales
+
+Verán los aspectos relevantes para evaluaciones no experimentales con **Francisco Cabrera**
 
 ---
 
-class: inverse, middle, center
+class: middle, center
 
 # Primer pilar:
 
@@ -497,7 +529,7 @@ Multiples lecciones de la economía del comportamiento
 
 En esta presentación hablaré sobre un estudio basado en estas ideas
 
-Rojas, Wydick and Lybbert (2021), [Can hope elevate microfinance? Evidence from Oaxaca, Mexico]((https://academic.oup.com/oep/article/74/1/236/6154385?login=true)), *Oxford Economic Papers*
+Rojas, Wydick and Lybbert (2021), [Can hope elevate microfinance? Evidence from Oaxaca, Mexico](https://academic.oup.com/oep/article/74/1/236/6154385?login=true), *Oxford Economic Papers*
 
 ---
 
@@ -549,7 +581,7 @@ Sujeto a
 
 ---
 
-class: inverse, middle, center
+class: middle, center
 
 # Segundo pilar:
 
@@ -581,7 +613,7 @@ Tratamiento con tres componentes
 # Documental *Historias de Esperanza*
 
 .center[
-&lt;iframe width="800" height="470" src="https://www.youtube.com/embed/gAidmWKCCD0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;iframe width="700" height="400" src="https://www.youtube.com/embed/gAidmWKCCD0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
 ]
 
 ---
@@ -589,21 +621,21 @@ Tratamiento con tres componentes
 # Documental *Historias de Esperanza*
 
 .center[
-&lt;img src="screenshot_doc.jpg" width="5040" /&gt;
+&lt;img src="screenshot_doc.jpg" width="800px" /&gt;
 ]
 ---
 
 # Ejercicio de fijación de metas
 
 .center[
-&lt;img src="magnet.png" width="1636" /&gt;
+&lt;img src="magnet.png" width="1000px" /&gt;
 ]
 ---
 
 # Mini curso de fijación de conceptos
 
 .center[
-&lt;img src="curriculum_session.jpg" width="80%" /&gt;
+&lt;img src="curriculum_session.jpg" width="55%" /&gt;
 ]
 
 
@@ -612,11 +644,11 @@ Tratamiento con tres componentes
 # Valle de Oaxaca
 
 .pull-left[
-![](http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-a-comp_orig.jpg)&lt;!-- --&gt;
+&lt;img src="http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-a-comp_orig.jpg" width="320px" /&gt;
 ]
 
 .pull-right[
-![](http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-b-comp_orig.jpg)&lt;!-- --&gt;
+&lt;img src="http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-b-comp_orig.jpg" width="320px" /&gt;
 
 ]
 
@@ -628,11 +660,11 @@ Tratamiento con tres componentes
 
 
 .pull-left[
-![](http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-d-comp_orig.jpg)&lt;!-- --&gt;
+&lt;img src="http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-d-comp_orig.jpg" width="350px" /&gt;
 ]
 
 .pull-right[
-![](http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-c-comp_orig.jpg)&lt;!-- --&gt;![](http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-e-comp_orig.png)&lt;!-- --&gt;
+&lt;img src="http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-c-comp_orig.jpg" width="350px" /&gt;&lt;img src="http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/groups-map-e-comp_orig.png" width="350px" /&gt;
 
 ]
 
@@ -661,7 +693,7 @@ Tuvimos acceso a registros administrativos sobre ahorro y crédito
 
 ---
 
-class: inverse, middle, center
+class: middle, center
 
 # Tercer pilar:
 
@@ -671,9 +703,7 @@ class: inverse, middle, center
 
 # Integridad del diseño
 
-Para obtener un estimador consistente del efecto del tratamiento se debe cumplir que aquellas socias que recibieron la intervención son estadísticamente iguales a las socias que no la recibieron
-
-Se colectaron las siguientes características en la línea base y se verificó que fueran estadísticamente iguales entre el grupo tratado y el de control
+Se colectaron las siguientes características en la línea base y se realizó una prueba de diferencia de medias entre el grupo de tratamiento y el grupo de control
 
 .pull-left[
 **Características predeterminadas**
@@ -699,7 +729,6 @@ Se colectaron las siguientes características en la línea base y se verificó q
 - Ganancias
 - Ahorros
 - Empleados
-
 ]
 
 ---
@@ -770,7 +799,7 @@ Algoritmo:
 # Efecto del tratamiento
 
 
-![](http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/ancova-combined_orig.png)&lt;!-- --&gt;
+&lt;img src="http://oaxacahope-project.weebly.com/uploads/8/0/9/9/80995658/ancova-combined_orig.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 Nota: Efectos en las variables de impacto estandarizadas
 
@@ -790,7 +819,10 @@ Hay un efecto significantivo del tratamiento en la sobrevivencia de los bancos (
 
 ---
 
-class: inverse, middle, center
+class: middle, center
+
+background-image: url('fondo-subtitulo.png')
+background-size: cover
 
 # 5. Ejercicio de replicación en R
 
@@ -1258,7 +1290,10 @@ Esto contrasta con el valor `\(p\)` obtenido de forma tradicional de 0.06
 
 ---
 
-class: inverse, middle, center
+class: middle, center
+
+background-image: url('fondo-subtitulo.png')
+background-size: cover
 
 # 6. Reflexiones finales
 
@@ -1286,7 +1321,7 @@ class: inverse, middle, center
 
 ---
 
-class: center, middle, inverse
+class: center, middle
 
 # ¡Gracias!
 
@@ -1308,7 +1343,8 @@ El chakra viene de [remark.js](https://remarkjs.com), [**knitr**](https://yihui.
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
 "highlightLines": true,
-"countIncrementalSlides": false
+"countIncrementalSlides": false,
+"ratio": "16:9"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
