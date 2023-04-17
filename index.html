@@ -52,7 +52,7 @@ background-size: cover
 ]
 
 .affiliation[
-#### Centro de Investigación y Docencia Económicas &lt;br&gt; División de Economía  &lt;br&gt;  &lt;br&gt; Actualización: 2023-04-16
+#### Centro de Investigación y Docencia Económicas &lt;br&gt; División de Economía  &lt;br&gt;  &lt;br&gt; Actualización: 2023-04-17
 ]
 
 
@@ -785,7 +785,7 @@ En un experimento, sabemos qué unidades son asignadas a tratamiento y control y
 
 Inferencia por aleatorización considera **qué hubiera pasado** bajo **todas** las posibles asignaciones aleatorias, no solo la que se llevó a cabo en el experimento
 
-El procedimiento se basa en la idea de que el efecto observado. `\(\beta_T\)`, puede ser debido no al tratamiento, sino simplemente a qué grupos fueron asignados a tratamiento y a control
+El procedimiento se basa en la idea de que el efecto observadom, `\(\beta_T\)`, puede ser debido no al tratamiento, sino simplemente a qué grupos fueron asignados a tratamiento y a control
 
 Algoritmo:
 
@@ -793,6 +793,26 @@ Algoritmo:
 3. Reestimar `\(\beta_{T,s}\)` con la asignación de 1
 4. Repetir 1 y 2 `\(S\)` veces (1,000 quizás)
 5. Comparar `\(\beta_T\)` con la distribución de los `\(\beta_{T,s}\)` y preguntárnos, ¿qué tan común o anormal es el `\(\beta_T\)` estimado con la muestra del experimento?
+
+---
+
+# Notas sobre inferencia por aleatorización
+
+Las pruebas de hipótesis clásicas están basadas en **teoría asintótica**
+
+Los valores `\(p\)` pueden interpretarse como la probabilidad de observar una diferencia (por ejemplo, un efecto de tratamiento) si la muestra hubiera sido obtenida a partir de un marco muestral en donde no existe tal diferencia
+
+Existe una discusión sobre si esto es informativo cuando tenemos un estudio experimental
+
+En un experimento observamos **todas** las posibles unidades elegibles por lo que las diferencias son **exactas**
+
+Inferencia por aleatorización consiste en obtener los valores `\(p\)` con base en la variabilidad en la asignación de tratamientos hipotéticos
+
+Si **hipótesis nula estricta** es verdadera, las unidades en el grupo control tendrían el mismo valor de `\(y_i\)` en caso de que hubieran sido asignadas al grupo de tratamiento, y viceversa
+
+Podemos calcular las diferencias bajo **cada uno** de las posibles asignaciones aleatorias para construir una distribución de referencia bajo la hipótesis nula estricta
+
+Comparamos qué tan inusual es la diferencia observada en el experimento contra la distribución de referencia
 
 ---
 
